@@ -1,5 +1,5 @@
 import { Text, StyleSheet, View, Image, Button } from "react-native";
-import { Logo } from "../assets";
+import { Logo, Poster } from "../assets";
 
 import React from "react";
 
@@ -10,6 +10,8 @@ const HomeScreen = () => {
         <Image source={Logo} />
         <Button title="შესვლა" />
       </View>
+      <Text style={styles.title}>ბლოგი</Text>
+      <Image source={Poster} style={styles.poster} />
     </View>
   );
 };
@@ -28,5 +30,17 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     flexDirection: "column",
+  },
+  title: {
+    color: "#1A1A1F",
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 20,
+  },
+  poster: {
+    alignSelf: "center",
+    width: 350,
+    resizeMode: "cover",
   },
 });
