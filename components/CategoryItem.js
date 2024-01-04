@@ -13,11 +13,11 @@ export default CategoryItem;
 
 const styles = StyleSheet.create({
   item: {
-    padding: 20,
+    padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
   },
   title: {
-    fontSize: 32,
+    fontSize: 25,
   },
 });
