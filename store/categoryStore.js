@@ -7,6 +7,7 @@ const useCategory = create((set) => ({
     try {
       const response = await getCategories();
       const data = response.data.data;
+
       set({ data });
     } catch (error) {
       console.log(error);
