@@ -8,13 +8,22 @@ import {
   Dimensions,
 } from "react-native";
 import { Formik } from "formik";
+import { useNavigation } from "@react-navigation/native";
 import loginSchema from "../schemas/login-schema";
+import { login } from "../services/axios";
 
 const LoginScreen = () => {
+  const navigation = useNavigation();
   const { width: screenWidth } = Dimensions.get("window");
 
   const submitHandler = async (values) => {
-    console.log(values);
+    try {
+      await login(values);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigation.navigate("home");
+    }
   };
   return (
     <View style={styles.page}>
