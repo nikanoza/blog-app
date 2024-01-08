@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Formik } from "formik";
+import loginSchema from "../schemas/login-schema";
 
 const LoginScreen = () => {
   const { width: screenWidth } = Dimensions.get("window");
@@ -19,8 +20,19 @@ const LoginScreen = () => {
     <View style={styles.page}>
       <Text style={styles.title}>შესვლა</Text>
       <Text style={styles.label}>ელ-ფოსტა</Text>
-      <Formik initialValues={{ email: "" }} onSubmit={submitHandler}>
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+      <Formik
+        initialValues={{ email: "" }}
+        onSubmit={submitHandler}
+        validationSchema={loginSchema}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          touched,
+          errors,
+        }) => (
           <View>
             <TextInput
               placeholder="Example@redberry.ge"
@@ -29,6 +41,9 @@ const LoginScreen = () => {
               onBlur={handleBlur("email")}
               value={values.email}
             />
+            {touched.email && errors.email && (
+              <Text style={{ color: "red" }}>{errors.email}</Text>
+            )}
             <TouchableOpacity
               style={[styles.button, { width: screenWidth - 40 }]}
               onPress={handleSubmit}
