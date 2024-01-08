@@ -1,12 +1,20 @@
 import { Text, StyleSheet, View, Image, Button, FlatList } from "react-native";
 import { Logo, Poster } from "../assets";
 import React, { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+
 import { useCategory } from "../store";
 import { CategoryItem } from "../components";
 
 const HomeScreen = () => {
   const categories = useCategory((state) => state.data);
   const fetchCategories = useCategory((state) => state.fetchData);
+
+  const navigation = useNavigation();
+
+  const navigateToLogin = () => {
+    navigation.navigate("login");
+  };
 
   useEffect(() => {
     fetchCategories();
@@ -16,7 +24,7 @@ const HomeScreen = () => {
     <View style={styles.page}>
       <View style={styles.header}>
         <Image source={Logo} />
-        <Button title="შესვლა" />
+        <Button title="შესვლა" onPress={navigateToLogin} />
       </View>
       <Text style={styles.title}>ბლოგი</Text>
       <Image source={Poster} style={styles.poster} />
