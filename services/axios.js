@@ -11,3 +11,11 @@ const instance = axios.create({
 export const getCategories = async () => {
   return instance.get("/categories");
 };
+
+export const login = async (data, token) => {
+  return instance.post("/login", data, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+};

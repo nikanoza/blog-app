@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,23 +7,37 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import { Formik } from "formik";
 
 const LoginScreen = () => {
   const { width: screenWidth } = Dimensions.get("window");
+
+  const submitHandler = async (values) => {
+    console.log(values);
+  };
   return (
     <View style={styles.page}>
       <Text style={styles.title}>შესვლა</Text>
       <Text style={styles.label}>ელ-ფოსტა</Text>
-      <TextInput
-        placeholder="Example@redberry.ge"
-        style={[styles.input, { width: screenWidth - 40 }]}
-      />
-      <TouchableOpacity
-        style={[styles.button, { width: screenWidth - 40 }]}
-        onPress={() => {}}
-      >
-        <Text style={styles.buttonText}>შესვლა</Text>
-      </TouchableOpacity>
+      <Formik initialValues={{ email: "" }} onSubmit={submitHandler}>
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
+          <View>
+            <TextInput
+              placeholder="Example@redberry.ge"
+              style={[styles.input, { width: screenWidth - 40 }]}
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
+            />
+            <TouchableOpacity
+              style={[styles.button, { width: screenWidth - 40 }]}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.buttonText}>შესვლა</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </Formik>
     </View>
   );
 };
