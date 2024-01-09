@@ -3,12 +3,13 @@ import { Logo, Poster } from "../assets";
 import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import { useCategory } from "../store";
+import { useCategory, useLogin } from "../store";
 import { CategoryItem } from "../components";
 
 const HomeScreen = () => {
   const categories = useCategory((state) => state.data);
   const fetchCategories = useCategory((state) => state.fetchData);
+  const loginStatus = useLogin((state) => state.loginStatus);
 
   const navigation = useNavigation();
 
@@ -24,7 +25,11 @@ const HomeScreen = () => {
     <View style={styles.page}>
       <View style={styles.header}>
         <Image source={Logo} />
-        <Button title="შესვლა" onPress={navigateToLogin} />
+        {loginStatus ? (
+          <Button title="დაამატე ბლოგი" onPress={navigateToLogin} />
+        ) : (
+          <Button title="შესვლა" onPress={navigateToLogin} />
+        )}
       </View>
       <Text style={styles.title}>ბლოგი</Text>
       <Image source={Poster} style={styles.poster} />
