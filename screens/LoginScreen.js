@@ -10,10 +10,12 @@ import {
 import { Formik } from "formik";
 import { useNavigation } from "@react-navigation/native";
 import loginSchema from "../schemas/login-schema";
-import { login } from "../services/axios";
+import { useLogin } from "../store";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
+  const changeStatus = useLogin((state) => state.login);
+  console.log(changeStatus);
   const { width: screenWidth } = Dimensions.get("window");
 
   const submitHandler = async (values) => {
@@ -22,6 +24,7 @@ const LoginScreen = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      changeStatus();
       navigation.navigate("home");
     }
   };
