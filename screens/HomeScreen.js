@@ -17,6 +17,10 @@ const HomeScreen = () => {
     navigation.navigate("login");
   };
 
+  const navigateToNewBlog = () => {
+    navigation.navigate("newBlog");
+  };
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -26,7 +30,7 @@ const HomeScreen = () => {
       <View style={styles.header}>
         <Image source={Logo} />
         {loginStatus ? (
-          <Button title="დაამატე ბლოგი" onPress={navigateToLogin} />
+          <Button title="დაამატე ბლოგი" onPress={navigateToNewBlog} />
         ) : (
           <Button title="შესვლა" onPress={navigateToLogin} />
         )}
