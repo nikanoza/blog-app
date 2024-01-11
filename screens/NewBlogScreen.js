@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useCategory } from "../store";
 import { Logo } from "../assets";
+import newBlogSchema, { initialValues } from "../schemas/create-blog";
 
 const NewBlogScreen = () => {
   const categories = useCategory((state) => state.data);
@@ -16,9 +17,9 @@ const NewBlogScreen = () => {
       </View>
       <Text style={styles.title}>ბლოგის დამატება</Text>
       <Formik
-        initialValues={{ email: "" }}
+        initialValues={initialValues}
         onSubmit={submitHandler}
-        validationSchema={loginSchema}
+        validationSchema={newBlogSchema}
       >
         {({
           handleChange,

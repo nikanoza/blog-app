@@ -31,4 +31,13 @@ const newBlogSchema = Yup.object().shape({
     .required("Email is required"),
 });
 
+export const initialValues = {
+  title: "",
+  description: "",
+  author: "",
+  publish_date: "",
+  categories: [],
+  email: "",
+};
+
 export default newBlogSchema;
