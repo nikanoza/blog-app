@@ -15,7 +15,6 @@ import { useLogin } from "../store";
 const LoginScreen = () => {
   const navigation = useNavigation();
   const changeStatus = useLogin((state) => state.login);
-  console.log(changeStatus);
   const { width: screenWidth } = Dimensions.get("window");
 
   const submitHandler = async (values) => {
