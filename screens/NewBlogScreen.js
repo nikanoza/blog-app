@@ -4,13 +4,12 @@ import {
   View,
   Image,
   Button,
-  FlatList,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import { launchImageLibrary } from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker";
 
 import { useCategory } from "../store";
 import { Folder, Logo } from "../assets";
@@ -21,12 +20,28 @@ const NewBlogScreen = () => {
   const navigation = useNavigation();
   const [photo, setPhoto] = useState(null);
 
-  const handleChoosePhoto = () => {
-    launchImageLibrary({ noData: true }, (response) => {
-      if (response) {
-        setPhoto(response);
+  useEffect(() => {
+    (async () => {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
       }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     });
+    console.log(result);
+    if (!result.canceled) {
+      console.log(result);
+      setPhoto(result.assets[0].uri);
+    }
   };
 
   return (
@@ -49,17 +64,12 @@ const NewBlogScreen = () => {
           errors,
         }) => (
           <View style={{ paddingHorizontal: 20 }}>
-            <Text style={styles.label}>ატვირთეთ ფოტო</Text>
-            {photo && (
-              <Image
-                source={{ uri: photo.uri }}
-                style={{ width: 300, height: 300 }}
-              />
+            {photo ? (
+              <Image source={{ uri: photo }} style={styles.image} />
+            ) : (
+              <Text style={styles.label}>ატვირთეთ ფოტო</Text>
             )}
-            <TouchableOpacity
-              style={styles.imageBox}
-              onPress={handleChoosePhoto}
-            >
+            <TouchableOpacity style={styles.imageBox} onPress={pickImage}>
               <Image source={Folder} />
               <Text style={styles.label}>აირჩიეთ ფაილი</Text>
             </TouchableOpacity>
@@ -109,5 +119,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+  },
+  image: {
+    width: 300,
+    height: 300,
+    marginTop: 20,
+    marginHorizontal: "auto",
   },
 });
