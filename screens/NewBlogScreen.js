@@ -5,6 +5,7 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -73,6 +74,26 @@ const NewBlogScreen = () => {
               <Image source={Folder} />
               <Text style={styles.label}>აირჩიეთ ფაილი</Text>
             </TouchableOpacity>
+            <Text style={styles.label}>ავტორი*</Text>
+            <TextInput
+              onChangeText={handleChange("author")}
+              onBlur={handleBlur("author")}
+              value={values.author}
+              style={styles.input}
+            />
+            {touched.author && errors.author && (
+              <Text style={{ color: "red" }}>{errors.author}</Text>
+            )}
+            <Text style={styles.label}>სათაური*</Text>
+            <TextInput
+              onChangeText={handleChange("title")}
+              onBlur={handleBlur("title")}
+              value={values.title}
+              style={styles.input}
+            />
+            {touched.title && errors.title && (
+              <Text style={{ color: "red" }}>{errors.title}</Text>
+            )}
           </View>
         )}
       </Formik>
@@ -125,5 +146,12 @@ const styles = StyleSheet.create({
     height: 300,
     marginTop: 20,
     marginHorizontal: "auto",
+  },
+  input: {
+    height: 44,
+    borderStyle: "solid",
+    borderWidth: 1.5,
+    marginTop: 10,
+    paddingHorizontal: 10,
   },
 });
