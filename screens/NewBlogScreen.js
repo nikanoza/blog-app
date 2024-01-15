@@ -4,6 +4,7 @@ import {
   View,
   Image,
   Button,
+  DatePickerIOS,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -21,6 +22,7 @@ const NewBlogScreen = () => {
   const categories = useCategory((state) => state.data);
   const navigation = useNavigation();
   const [photo, setPhoto] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -39,11 +41,14 @@ const NewBlogScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result);
     if (!result.canceled) {
       console.log(result);
       setPhoto(result.assets[0].uri);
     }
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
   };
 
   return (
@@ -62,6 +67,7 @@ const NewBlogScreen = () => {
             handleChange,
             handleBlur,
             handleSubmit,
+            setValues,
             values,
             touched,
             errors,
@@ -103,10 +109,24 @@ const NewBlogScreen = () => {
                 multiline={true}
                 numberOfLines={5}
                 value={values.description}
-                style={styles.input}
+                style={{ ...styles.input, height: "auto" }}
               />
               {touched.description && errors.description && (
                 <Text style={{ color: "red" }}>{errors.description}</Text>
+              )}
+              <Text style={styles.label}>გამოქვეყნების თარიღი*</Text>
+              <TouchableOpacity onPress={showDatePicker} style={styles.input}>
+                <Text style={styles.dateText}>{values.publish_date}</Text>
+              </TouchableOpacity>
+
+              {isDatePickerVisible && (
+                <DatePickerIOS
+                  date={selectedDate}
+                  onDateChange={(date) => {
+                    setValues("publish_date", date.toString());
+                  }}
+                  mode="date"
+                />
               )}
             </View>
           )}
