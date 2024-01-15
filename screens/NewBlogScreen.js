@@ -5,6 +5,7 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  ScrollView,
   TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -46,58 +47,72 @@ const NewBlogScreen = () => {
   };
 
   return (
-    <View style={styles.page}>
-      <View style={styles.header}>
-        <Image source={Logo} />
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.page}>
+        <View style={styles.header}>
+          <Image source={Logo} />
+        </View>
+        <Text style={styles.title}>ბლოგის დამატება</Text>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={() => {}}
+          validationSchema={newBlogSchema}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            touched,
+            errors,
+          }) => (
+            <View style={{ paddingHorizontal: 20 }}>
+              {photo ? (
+                <Image source={{ uri: photo }} style={styles.image} />
+              ) : (
+                <Text style={styles.label}>ატვირთეთ ფოტო</Text>
+              )}
+              <TouchableOpacity style={styles.imageBox} onPress={pickImage}>
+                <Image source={Folder} />
+                <Text style={styles.label}>აირჩიეთ ფაილი</Text>
+              </TouchableOpacity>
+              <Text style={styles.label}>ავტორი*</Text>
+              <TextInput
+                onChangeText={handleChange("author")}
+                onBlur={handleBlur("author")}
+                value={values.author}
+                style={styles.input}
+              />
+              {touched.author && errors.author && (
+                <Text style={{ color: "red" }}>{errors.author}</Text>
+              )}
+              <Text style={styles.label}>სათაური*</Text>
+              <TextInput
+                onChangeText={handleChange("title")}
+                onBlur={handleBlur("title")}
+                value={values.title}
+                style={styles.input}
+              />
+              {touched.title && errors.title && (
+                <Text style={{ color: "red" }}>{errors.title}</Text>
+              )}
+              <Text style={styles.label}>აღწერა*</Text>
+              <TextInput
+                onChangeText={handleChange("description")}
+                onBlur={handleBlur("description")}
+                multiline={true}
+                numberOfLines={5}
+                value={values.description}
+                style={styles.input}
+              />
+              {touched.description && errors.description && (
+                <Text style={{ color: "red" }}>{errors.description}</Text>
+              )}
+            </View>
+          )}
+        </Formik>
       </View>
-      <Text style={styles.title}>ბლოგის დამატება</Text>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={() => {}}
-        validationSchema={newBlogSchema}
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          touched,
-          errors,
-        }) => (
-          <View style={{ paddingHorizontal: 20 }}>
-            {photo ? (
-              <Image source={{ uri: photo }} style={styles.image} />
-            ) : (
-              <Text style={styles.label}>ატვირთეთ ფოტო</Text>
-            )}
-            <TouchableOpacity style={styles.imageBox} onPress={pickImage}>
-              <Image source={Folder} />
-              <Text style={styles.label}>აირჩიეთ ფაილი</Text>
-            </TouchableOpacity>
-            <Text style={styles.label}>ავტორი*</Text>
-            <TextInput
-              onChangeText={handleChange("author")}
-              onBlur={handleBlur("author")}
-              value={values.author}
-              style={styles.input}
-            />
-            {touched.author && errors.author && (
-              <Text style={{ color: "red" }}>{errors.author}</Text>
-            )}
-            <Text style={styles.label}>სათაური*</Text>
-            <TextInput
-              onChangeText={handleChange("title")}
-              onBlur={handleBlur("title")}
-              value={values.title}
-              style={styles.input}
-            />
-            {touched.title && errors.title && (
-              <Text style={{ color: "red" }}>{errors.title}</Text>
-            )}
-          </View>
-        )}
-      </Formik>
-    </View>
+    </ScrollView>
   );
 };
 
