@@ -4,7 +4,9 @@ import {
   View,
   Image,
   Button,
+  DatePickerIOS,
   TouchableOpacity,
+  ScrollView,
   TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -20,6 +22,7 @@ const NewBlogScreen = () => {
   const categories = useCategory((state) => state.data);
   const navigation = useNavigation();
   const [photo, setPhoto] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -38,66 +41,98 @@ const NewBlogScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result);
     if (!result.canceled) {
       console.log(result);
       setPhoto(result.assets[0].uri);
     }
   };
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
   return (
-    <View style={styles.page}>
-      <View style={styles.header}>
-        <Image source={Logo} />
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.page}>
+        <View style={styles.header}>
+          <Image source={Logo} />
+        </View>
+        <Text style={styles.title}>ბლოგის დამატება</Text>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={() => {}}
+          validationSchema={newBlogSchema}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setValues,
+            values,
+            touched,
+            errors,
+          }) => (
+            <View style={{ paddingHorizontal: 20 }}>
+              {photo ? (
+                <Image source={{ uri: photo }} style={styles.image} />
+              ) : (
+                <Text style={styles.label}>ატვირთეთ ფოტო</Text>
+              )}
+              <TouchableOpacity style={styles.imageBox} onPress={pickImage}>
+                <Image source={Folder} />
+                <Text style={styles.label}>აირჩიეთ ფაილი</Text>
+              </TouchableOpacity>
+              <Text style={styles.label}>ავტორი*</Text>
+              <TextInput
+                onChangeText={handleChange("author")}
+                onBlur={handleBlur("author")}
+                value={values.author}
+                style={styles.input}
+              />
+              {touched.author && errors.author && (
+                <Text style={{ color: "red" }}>{errors.author}</Text>
+              )}
+              <Text style={styles.label}>სათაური*</Text>
+              <TextInput
+                onChangeText={handleChange("title")}
+                onBlur={handleBlur("title")}
+                value={values.title}
+                style={styles.input}
+              />
+              {touched.title && errors.title && (
+                <Text style={{ color: "red" }}>{errors.title}</Text>
+              )}
+              <Text style={styles.label}>აღწერა*</Text>
+              <TextInput
+                onChangeText={handleChange("description")}
+                onBlur={handleBlur("description")}
+                multiline={true}
+                numberOfLines={5}
+                value={values.description}
+                style={{ ...styles.input, height: "auto" }}
+              />
+              {touched.description && errors.description && (
+                <Text style={{ color: "red" }}>{errors.description}</Text>
+              )}
+              <Text style={styles.label}>გამოქვეყნების თარიღი*</Text>
+              <TouchableOpacity onPress={showDatePicker} style={styles.input}>
+                <Text style={styles.dateText}>{values.publish_date}</Text>
+              </TouchableOpacity>
+
+              {isDatePickerVisible && (
+                <DatePickerIOS
+                  date={selectedDate}
+                  onDateChange={(date) => {
+                    setValues("publish_date", date.toString());
+                  }}
+                  mode="date"
+                />
+              )}
+            </View>
+          )}
+        </Formik>
       </View>
-      <Text style={styles.title}>ბლოგის დამატება</Text>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={() => {}}
-        validationSchema={newBlogSchema}
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          touched,
-          errors,
-        }) => (
-          <View style={{ paddingHorizontal: 20 }}>
-            {photo ? (
-              <Image source={{ uri: photo }} style={styles.image} />
-            ) : (
-              <Text style={styles.label}>ატვირთეთ ფოტო</Text>
-            )}
-            <TouchableOpacity style={styles.imageBox} onPress={pickImage}>
-              <Image source={Folder} />
-              <Text style={styles.label}>აირჩიეთ ფაილი</Text>
-            </TouchableOpacity>
-            <Text style={styles.label}>ავტორი*</Text>
-            <TextInput
-              onChangeText={handleChange("author")}
-              onBlur={handleBlur("author")}
-              value={values.author}
-              style={styles.input}
-            />
-            {touched.author && errors.author && (
-              <Text style={{ color: "red" }}>{errors.author}</Text>
-            )}
-            <Text style={styles.label}>სათაური*</Text>
-            <TextInput
-              onChangeText={handleChange("title")}
-              onBlur={handleBlur("title")}
-              value={values.title}
-              style={styles.input}
-            />
-            {touched.title && errors.title && (
-              <Text style={{ color: "red" }}>{errors.title}</Text>
-            )}
-          </View>
-        )}
-      </Formik>
-    </View>
+    </ScrollView>
   );
 };
 
