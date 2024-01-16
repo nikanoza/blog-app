@@ -4,7 +4,6 @@ import {
   View,
   Image,
   Button,
-  DatePickerIOS,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -13,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as ImagePicker from "expo-image-picker";
+import DatePicker from "react-native-date-picker";
 
 import { useCategory } from "../store";
 import { Folder, Logo } from "../assets";
@@ -118,16 +118,12 @@ const NewBlogScreen = () => {
               <TouchableOpacity onPress={showDatePicker} style={styles.input}>
                 <Text style={styles.dateText}>{values.publish_date}</Text>
               </TouchableOpacity>
-
-              {isDatePickerVisible && (
-                <DatePickerIOS
-                  date={selectedDate}
-                  onDateChange={(date) => {
-                    setValues("publish_date", date.toString());
-                  }}
-                  mode="date"
-                />
-              )}
+              <DatePicker
+                date={this.state.selectedDate}
+                mode="date"
+                display="default"
+                onDateChange={this.handleDateChange}
+              />
             </View>
           )}
         </Formik>
