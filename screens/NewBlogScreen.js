@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Picker,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -124,6 +125,16 @@ const NewBlogScreen = () => {
                 display="default"
                 onDateChange={this.handleDateChange}
               />
+              <Picker>
+                <FlatList
+                  data={categories}
+                  renderItem={
+                    <Picker.item label={item.title} value={item.title} />
+                  }
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={(item) => item.id.toString()}
+                />
+              </Picker>
             </View>
           )}
         </Formik>
