@@ -135,6 +135,15 @@ const NewBlogScreen = () => {
                   keyExtractor={(item) => item.id.toString()}
                 />
               </Picker>
+              <TextInput
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email}
+                style={styles.input}
+              />
+              {touched.email && errors.email && (
+                <Text style={{ color: "red" }}>{errors.email}</Text>
+              )}
             </View>
           )}
         </Formik>
