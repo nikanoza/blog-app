@@ -144,6 +144,12 @@ const NewBlogScreen = () => {
               {touched.email && errors.email && (
                 <Text style={{ color: "red" }}>{errors.email}</Text>
               )}
+              <TouchableOpacity
+                style={[styles.button, { width: screenWidth - 40 }]}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.buttonText}>შესვლა</Text>
+              </TouchableOpacity>
             </View>
           )}
         </Formik>
@@ -204,5 +210,17 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     marginTop: 10,
     paddingHorizontal: 10,
+  },
+  button: {
+    borderRadius: 8,
+    backgroundColor: "#5D37F3",
+    marginTop: 30,
+    height: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#ffffff",
   },
 });
